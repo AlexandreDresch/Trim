@@ -1,5 +1,6 @@
 import AppointmentCard from "@/components/shared/appointment-card";
 import BarbershopCard from "@/components/shared/barbershop-card";
+import Footer from "@/components/shared/footer";
 import Header from "@/components/shared/header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,11 @@ import Image from "next/image";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
+  const popularBarbershops = await db.barbershop.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  });
 
   return (
     <div className="space-y-6">
@@ -60,6 +66,22 @@ export default async function Home() {
           })}
         </div>
       </section>
+
+      <section className="space-y-3 px-5">
+        <h2 className="text-xs font-semibold uppercase text-muted-foreground">
+          Popular
+        </h2>
+
+        <div className="flex gap-4 overflow-auto [&::webkit-scrollbar]:hidden">
+          {popularBarbershops.map((barbershop) => {
+            return (
+              <BarbershopCard key={barbershop.id} barbershop={barbershop} />
+            );
+          })}
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }
