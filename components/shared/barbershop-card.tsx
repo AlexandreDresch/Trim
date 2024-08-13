@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { StarIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function BarbershopCard({ barbershop }: BarbershopCardProps) {
   return (
@@ -31,8 +32,8 @@ export default function BarbershopCard({ barbershop }: BarbershopCardProps) {
 
           <p className="truncate text-sm text-gray-400">{barbershop.address}</p>
 
-          <Button className="mt-3 w-full" variant="secondary">
-            Reserve
+          <Button className="mt-3 w-full" variant="secondary" asChild>
+            <Link href={`/barbershops/${barbershop.id}`}>Reserve</Link>
           </Button>
         </div>
       </CardContent>
