@@ -1,4 +1,5 @@
 import { BarbershopPageProps } from "@/app/types";
+import ServiceCard from "@/components/shared/service-card";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/prisma";
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
@@ -10,6 +11,9 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
   const barbershop = await db.barbershop.findUnique({
     where: {
       id: params.id,
+    },
+    include: {
+      BarbershopService: true,
     },
   });
 
@@ -64,6 +68,15 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
       <div className="space-y-3 border-b border-solid p-5">
         <h4 className="text-xs font-bold uppercase text-gray-400">About</h4>
         <p className="text-justify text-sm">{barbershop?.description}</p>
+      </div>
+
+      <div className="space-y-3 p-5">
+        <h4 className="text-xs font-bold uppercase text-gray-400">Services</h4>
+        <div className="space-y-3">
+          {barbershop.BarbershopService.map((service) => (
+            <ServiceCard service={service} key={service.id} />
+          ))}
+        </div>
       </div>
     </div>
   );
